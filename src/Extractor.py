@@ -5,13 +5,13 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from Matcher import Matcher
 import re
 
+
 def findAmount(sent):
     toRead = sent.lower()
     patt = re.compile(r'(\d*\.?\d+)\s(orang?|kasus?)')
     # patt = re.compile(r'(sejumlah?|sebanyak?|orang?|kasus?\s?(\d*\.?\d+)\sorang?|kasus?)|((\d+[\.\,]\d+\spersen))')
     matches = patt.finditer(toRead)
     return matches
-
 
 def findDate(sent):
     min = 99999
@@ -25,7 +25,12 @@ def findDate(sent):
             max = x.end()
     return sent[min:max]
 
-def formatInfo(article)
+def formatInfo(article, amount, date):
+    form = ('''Jumlah: {}
+Waktu: {}
+{}''') 
+    return form.format(amount, date, article)
+
 
 class Extractor:
     'Class for extraction information from text, usually amount and time, based on keyword'
@@ -42,11 +47,11 @@ class Extractor:
         for sent in list_of_sentence:
             res = Matcher(sent.lower(), self.keyword)
             articleDate = ""
-            if method == 'optionBM':
+            if self.method == 'optionBM':
                 r = res.BMMatch()
-            elif method == 'optionKMP':
+            elif self.method == 'optionKMP':
                 r = res.KMPMatch()
-            elif method == 'optionRE':
+            elif self.method == 'optionRE':
                 r = res.REMatch()
             if r > -1:
                 result.append(sent)
@@ -57,25 +62,22 @@ class Extractor:
 
     def extractInformation(self):
         result, articleDate = self.findInfoWithMethod()
+        forms = []
         for res in result:
             date = findDate(res)
-            amount = findAmount(res)
-                
+            amount = []
+            for a in findAmount(res):
+                amount.append(a.group())
+
             if date == "":
                 date = articleDate
 
+            forms.append(formatInfo(res, amount, date))
 
-            print(res)
-            print(findAmount(res))
-            print(findDate(res))
-    
+        return forms
 
 
-
-def findInfo(toFind):
-    pass
-
-file = open('../test/coba.txt');
+""" file = open('../test/coba.txt');
 
 textToRead = file.read()
 # EXAMPLE_TEXT = "Hello Mr. Smith, how are you doing today? The weather is great, and Python is awesome. The sky is pinkish-blue. You shouldn't eat cardboard."
@@ -93,7 +95,7 @@ result, date = ex.findInfoWithMethod()
 for res in result:
     print(res)
     print(findAmount(res))
-    print(findDate(res))
+    print(findDate(res)) """
 """ 
 list_of_sentence = sent_tokenize(textToRead)
 

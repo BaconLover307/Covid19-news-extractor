@@ -1,4 +1,4 @@
-{% extends  'base.html' %}
+{% extends  "base.html" %}
 
 {% block head %}
 <title>
@@ -58,10 +58,24 @@
             <input class="btn btn-primary" type="submit" value="MATCH!">
         </div>
         <div class="row">
-            <div class=container>
-                {% keyword %}
+            <div class="container keyword" >
+                Keyword: {{ keyword }}
             </div>
-            
+            {% for ans in answers %}
+            <div class="row-answers">
+                <div class="ans-container">
+                    <div class="container">
+                        {{ ans.filename }}
+                    </div>
+                    {% for info in ans.info %}
+                    <div class="container info">
+                        {{ info }}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </form>
 

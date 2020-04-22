@@ -86,7 +86,6 @@ class Matcher:
             else:       # no match
                 fail[i] = 0
                 i += 1
-        print(fail)
         return fail
 
     def REMatch(self):
