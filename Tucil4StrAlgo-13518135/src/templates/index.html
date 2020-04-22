@@ -1,0 +1,94 @@
+{% extends  "base.html" %}
+
+{% block head %}
+<title>
+    Covid-19 News Extracter
+</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="jumbotron text-center" style="padding: 2rem">
+    <h1>Covid-19 News Extractor</h1>
+    <br>
+    <h2>Gregorius Jovan Kresnadi<br>13518135</h2>
+    <br>
+    <p>Tugas kecil mata kuliah Strategi Algoritma IF2211</p> 
+</div>
+
+<div class="container">
+    <form action="/" method="POST" enctype="multipart/form-data" >
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="keywordInput">Ketikkan Keyword:</label>
+                    <input type="text" class="form-control" name="keywordInput" id="keywordInput" placeholder="terkonfirmasi positif">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="sourceFileControl">File text untuk dibaca:</label>
+                    Project file path: <input type="file" class="form-control-file" name="sourceFile"  id="sourceFile" multiple="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioMethod" id="radioKMP" value="optionKMP" checked>
+                        <label class="form-check-label" for="radioKMP">
+                        Knuth-Morris-Pratt Algorithm (KMP)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioMethod" id="radioBM" value="optionBM">
+                        <label class="form-check-label" for="radioBM">
+                        Boyer-Moore Algorithm (BM)
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioMethod" id="radioRegex" value="optionRegex">
+                        <label class="form-check-label" for="radioRegex">
+                        Regular Expression (Regex)
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row match">
+            <input class="btn btn-primary" type="submit" value="MATCH!">
+        </div>
+        <div class="row">
+            <div class="container keyword" >
+                Keyword: {{ keyword }}
+            </div>
+            {% for ans in answers %}
+            <div class="row-answers">
+                <div class="ans-container">
+                    <div class="container">
+                        {{ ans.filename }}
+                    </div>
+                    {% for info in ans.info %}
+                    <div class="container info">
+                        {{ info }}
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+
+
+</div>
+
+<div class="footer">
+
+    <footer class="card-footer bg-light footer-font-style">
+        <div class="container">
+            <a href="https://github.com/BaconLover307/Covid19-news-extractor"> Source Code </h3>
+        </div>
+    </footer>
+</div>
+
+{% endblock %}
